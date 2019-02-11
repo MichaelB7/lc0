@@ -83,6 +83,7 @@ class SearchParams {
   int GetMaxCollisionEvents() const { return kMaxCollisionEvents; }
   int GetMaxCollisionVisitsId() const { return kMaxCollisionVisits; }
   bool GetOutOfOrderEval() const { return kOutOfOrderEval; }
+  bool GetTactical() const { return options_.Get<bool>(kTacticalId.GetId()); }
   bool GetSyzygyFastPlay() const { return kSyzygyFastPlay; }
   int GetMultiPv() const { return options_.Get<int>(kMultiPvId.GetId()); }
   std::string GetScoreType() const {
@@ -121,6 +122,7 @@ class SearchParams {
   static const OptionId kOutOfOrderEvalId;
   static const OptionId kSyzygyFastPlayId;
   static const OptionId kMultiPvId;
+  static const OptionId kTacticalId;
   static const OptionId kScoreTypeId;
   static const OptionId kHistoryFillId;
   static const OptionId kMinimumKLDGainPerNode;
@@ -147,6 +149,7 @@ class SearchParams {
   const int kMaxCollisionEvents;
   const int kMaxCollisionVisits;
   const bool kOutOfOrderEval;
+  const bool kTactical;
   const bool kSyzygyFastPlay;
   const FillEmptyHistory kHistoryFill;
   const int kMiniBatchSize;

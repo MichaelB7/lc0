@@ -28,7 +28,7 @@ if cc.get_id() == 'clang' or cc.get_id() == 'gcc'
   add_project_arguments('-pedantic', language : 'cpp')
 
   if get_option('buildtype') == 'release'
-    add_project_arguments('-march=native', language : 'cpp')
+    add_project_arguments('-march=native', '-flto', language : 'cpp')
   endif
 endif
 

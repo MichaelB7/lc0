@@ -154,6 +154,9 @@ const OptionId SearchParams::kMultiPvId{
     "multipv", "MultiPV",
     "Number of game play lines (principal variations) to show in UCI info "
     "output."};
+const OptionId SearchParams::kTacticalId{
+	"tactical", "Tactical",
+	"Uses MultiPV, but only shows best line."};
 const OptionId SearchParams::kScoreTypeId{
     "score-type", "ScoreType",
     "What to display as score. Either centipawns (the UCI default), win "
@@ -201,9 +204,10 @@ void SearchParams::Populate(OptionsParser* options) {
   options->Add<IntOption>(kMaxCollisionVisitsId, 1, 1000000) = 9999;
   options->Add<BoolOption>(kOutOfOrderEvalId) = true;
   options->Add<BoolOption>(kSyzygyFastPlayId) = true;
-  options->Add<IntOption>(kMultiPvId, 1, 500) = 1;
+  options->Add<BoolOption>(kTacticalId) = true;
+  options->Add<IntOption>(kMultiPvId, 1, 256) = 3;
   std::vector<std::string> score_type = {"centipawn", "win_percentage", "Q"};
-  options->Add<ChoiceOption>(kScoreTypeId, score_type) = "centipawn";
+  options->Add<ChoiceOption>(kScoreTypeId, score_type) = "win_percentage";
   std::vector<std::string> history_fill_opt{"no", "fen_only", "always"};
   options->Add<ChoiceOption>(kHistoryFillId, history_fill_opt) = "fen_only";
   options->Add<IntOption>(kKLDGainAverageInterval, 1, 10000000) = 100;
@@ -227,6 +231,7 @@ SearchParams::SearchParams(const OptionsDict& options)
       kMaxCollisionVisits(options.Get<int>(kMaxCollisionVisitsId.GetId())),
       kOutOfOrderEval(options.Get<bool>(kOutOfOrderEvalId.GetId())),
       kSyzygyFastPlay(options.Get<bool>(kSyzygyFastPlayId.GetId())),
+      kTactical(options.Get<bool>(kTacticalId.GetId())),
       kHistoryFill(
           EncodeHistoryFill(options.Get<std::string>(kHistoryFillId.GetId()))),
       kMiniBatchSize(options.Get<int>(kMiniBatchSizeId.GetId())) {

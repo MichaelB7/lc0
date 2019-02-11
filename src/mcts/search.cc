@@ -102,7 +102,12 @@ void ApplyDirichletNoise(Node* node, float eps, double alpha) {
 }  // namespace
 
 void Search::SendUciInfo() REQUIRES(nodes_mutex_) {
+  if (!current_best_edge_) return;
+
+	
+  bool tactical = params_.GetTactical();
   auto edges = GetBestChildrenNoTemperature(root_node_, params_.GetMultiPv());
+  if (tactical) edges = GetBestChildrenNoTemperature(root_node_,1);
   auto score_type = params_.GetScoreType();
 
   std::vector<ThinkingInfo> uci_infos;
@@ -131,13 +136,16 @@ void Search::SendUciInfo() REQUIRES(nodes_mutex_) {
     } else if (score_type == "Q") {
       uci_info.score = edge.GetQ(0) * 10000;
     }
-    if (params_.GetMultiPv() > 1) uci_info.multipv = multipv;
-    bool flip = played_history_.IsBlackToMove();
-    for (auto iter = edge; iter;
-         iter = GetBestChildNoTemperature(iter.node()), flip = !flip) {
-      uci_info.pv.push_back(iter.GetMove(flip));
-      if (!iter.node()) break;  // Last edge was dangling, cannot continue.
-    }
+		  if (params_.GetMultiPv() > 1 && !tactical ) uci_info.multipv = multipv;
+			  bool flip = played_history_.IsBlackToMove();
+			  for (auto iter = edge; iter;
+				   iter = GetBestChildNoTemperature(iter.node()), flip = !flip)
+			  {
+				  uci_info.pv.push_back(iter.GetMove(flip));
+				  if (!iter.node()) break;
+				 // Last edge was dangling, cannot continue.
+			  }
+	  
   }
 
   if (!uci_infos.empty()) last_outputted_uci_info_ = uci_infos.front();

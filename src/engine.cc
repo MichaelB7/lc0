@@ -36,7 +36,7 @@
 
 namespace lczero {
 namespace {
-const int kDefaultThreads = 2;
+const int kDefaultThreads = 4;
 
 const OptionId kThreadsOptionId{"threads", "Threads",
                                 "Number of (CPU) worker threads to use.", 't'};
@@ -82,6 +82,8 @@ const OptionId kSpendSavedTimeId{
     "all future moves."};
 const OptionId kPonderId{"ponder", "Ponder",
                          "This option is ignored. Here to please chess GUIs."};
+/*const OptionId kTacticalId{"tactical", "Tactical",
+	"Uses MultiPV, but only show best line."};*/
 // Warning! When changed, also change number 30 in the help below!
 const size_t kAvgMovesPerPosition = 30;
 const OptionId kRamLimitMbId{
