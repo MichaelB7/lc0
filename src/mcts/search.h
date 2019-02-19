@@ -27,9 +27,11 @@
 
 #pragma once
 
+#include <boost/process.hpp>
 #include <functional>
 #include <shared_mutex>
 #include <thread>
+#include <queue>
 #include "chess/callbacks.h"
 #include "chess/uciloop.h"
 #include "mcts/node.h"
@@ -95,6 +97,11 @@ class Search {
   std::int64_t GetTotalPlayouts() const;
   // Returns the search parameters.
   const SearchParams& GetParams() const { return params_; }
+
+  //CurrentPosition current_position_;
+  std::string current_position_fen_;
+  std::vector<std::string> current_position_moves_;
+  std::string current_uci_;
 
  private:
   // Computes the best move, maybe with temperature (according to the settings).
@@ -192,6 +199,19 @@ class Search {
   BestMoveInfo::Callback best_move_callback_;
   ThinkingInfo::Callback info_callback_;
   const SearchParams params_;
+
+  void OpenAuxEngine();
+  void AuxEngineWorker();
+  void AuxWait();
+  void DoAuxEngine(Node* n);
+  static boost::process::ipstream auxengine_is_;
+  static boost::process::opstream auxengine_os_;
+  static boost::process::child auxengine_c_;
+  static bool auxengine_ready_;
+  std::queue<Node*> auxengine_queue_;
+  std::mutex auxengine_mutex_;
+  std::condition_variable auxengine_cv_;
+  std::vector<std::thread> auxengine_threads_;
 
   friend class SearchWorker;
 };
@@ -306,6 +326,8 @@ class SearchWorker {
   int number_out_of_order_ = 0;
   const SearchParams& params_;
   std::unique_ptr<Node> precached_node_;
+
+  void AuxMaybeEnqueueNode(Node* n);
 };
 
 }  // namespace lczero

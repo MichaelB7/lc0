@@ -92,6 +92,7 @@ files += [
   'src/chess/board.cc',
   'src/chess/position.cc',
   'src/chess/uciloop.cc',
+  'src/mcts/auxengine.cc',
   'src/mcts/node.cc',
   'src/mcts/params.cc',
   'src/mcts/search.cc',
@@ -137,7 +138,14 @@ else
     ]
 endif
 
+# Or this?  https://mesonbuild.com/Dependencies.html#boost
+# But this way worked.
+#deps += [ cc.find_library('boost_system'), ]
+# Appveyor build did not like the above.
 
+# I think boost::process is category system, so I need system?
+# Putting thread in also just in case.
+deps += [ dependency('boost', modules : ['thread', 'system' ], static : true) ]
 
 #############################################################################
 ## BACKENDS

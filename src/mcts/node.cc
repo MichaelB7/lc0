@@ -241,6 +241,10 @@ void Node::CancelScoreUpdate(int multivisit) {
   best_child_cached_ = nullptr;
 }
 
+void Node::InvalidateBestChild() {
+  best_child_cached_ = nullptr;
+}
+
 void Node::FinalizeScoreUpdate(float v, float d, int multivisit) {
   // Recompute Q.
   q_ += multivisit * (v - q_) / (n_ + multivisit);
