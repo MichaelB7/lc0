@@ -140,12 +140,15 @@ endif
 
 # Or this?  https://mesonbuild.com/Dependencies.html#boost
 # But this way worked.
-#deps += [ cc.find_library('boost_system'), ]
+#deps += [ cc.find_library('boost'), ]
+
 # Appveyor build did not like the above.
 
 # I think boost::process is category system, so I need system?
 # Putting thread in also just in case.
-deps += [ dependency('boost', modules : ['thread', 'system' ], static : true) ]
+
+#deps += [ dependency('boost', modules : ['thread', 'system' ], static : true) ]
+
 
 #############################################################################
 ## BACKENDS
