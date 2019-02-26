@@ -204,6 +204,7 @@ class Search {
   void AuxEngineWorker();
   void AuxWait();
   void DoAuxEngine(Node* n);
+  void AuxUpdateP(Node* n, std::vector<uint16_t> pv_moves, int ply);
   static boost::process::ipstream auxengine_is_;
   static boost::process::opstream auxengine_os_;
   static boost::process::child auxengine_c_;
@@ -212,6 +213,9 @@ class Search {
   std::mutex auxengine_mutex_;
   std::condition_variable auxengine_cv_;
   std::vector<std::thread> auxengine_threads_;
+  int64_t auxengine_total_dur = 0;
+  int64_t auxengine_num_evals = 0;
+  int64_t auxengine_num_updates = 0;
 
   friend class SearchWorker;
 };

@@ -724,7 +724,6 @@ void Search::Abort() {
 }
 
 void Search::Wait() {
-  LOGFILE << "aolsen Wait start";
   Mutex::Lock lock(threads_mutex_);
   while (!threads_.empty()) {
     threads_.back().join();
