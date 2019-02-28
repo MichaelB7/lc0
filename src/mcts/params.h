@@ -74,6 +74,9 @@ class SearchParams {
   bool GetVerboseStats() const {
     return options_.Get<bool>(kVerboseStatsId.GetId());
   }
+  bool GetLogLiveStats() const {
+    return options_.Get<bool>(kLogLiveStatsId.GetId());
+  }
   float GetSmartPruningFactor() const { return kSmartPruningFactor; }
   bool GetFpuAbsolute() const { return kFpuAbsolute; }
   float GetFpuReduction() const { return kFpuReduction; }
@@ -96,8 +99,8 @@ class SearchParams {
   float GetMinimumKLDGainPerNode() const {
     return options_.Get<float>(kMinimumKLDGainPerNode.GetId());
   }
-  std::string GetAuxEnginePath() const {
-    return options_.Get<std::string>(kAuxEnginePathId.GetId());
+  std::string GetAuxEngineFile() const {
+    return options_.Get<std::string>(kAuxEngineFileId.GetId());
   }
   std::string GetAuxEngineOptions() const {
     return options_.Get<std::string>(kAuxEngineOptionsId.GetId());
@@ -114,6 +117,9 @@ class SearchParams {
   int GetAuxEngineFollowPvDepth() const {
     return options_.Get<int>(kAuxEngineFollowPvDepthId.GetId());
   }
+  int GetAuxEngineVerbosity() const {
+    return options_.Get<int>(kAuxEngineVerbosityId.GetId());
+  }
 
   // Search parameter IDs.
   static const OptionId kMiniBatchSizeId;
@@ -129,6 +135,7 @@ class SearchParams {
   static const OptionId kTemperatureVisitOffsetId;
   static const OptionId kNoiseId;
   static const OptionId kVerboseStatsId;
+  static const OptionId kLogLiveStatsId;
   static const OptionId kSmartPruningFactorId;
   static const OptionId kFpuStrategyId;
   static const OptionId kFpuReductionId;
@@ -145,12 +152,13 @@ class SearchParams {
   static const OptionId kHistoryFillId;
   static const OptionId kMinimumKLDGainPerNode;
   static const OptionId kKLDGainAverageInterval;
-  static const OptionId kAuxEnginePathId;
+  static const OptionId kAuxEngineFileId;
   static const OptionId kAuxEngineOptionsId;
   static const OptionId kAuxEngineThresholdId;
   static const OptionId kAuxEngineDepthId;
   static const OptionId kAuxEngineBoostId;
   static const OptionId kAuxEngineFollowPvDepthId;
+  static const OptionId kAuxEngineVerbosityId;
 
  private:
   const OptionsDict& options_;

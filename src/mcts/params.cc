@@ -96,6 +96,9 @@ const OptionId SearchParams::kNoiseId{
 const OptionId SearchParams::kVerboseStatsId{
     "verbose-move-stats", "VerboseMoveStats",
     "Display Q, V, N, U and P values of every move candidate after each move."};
+const OptionId SearchParams::kLogLiveStatsId{
+    "log-live-stats", "LogLiveStats",
+    "Do VerboseMoveStats on every info update."};
 const OptionId SearchParams::kSmartPruningFactorId{
     "smart-pruning-factor", "SmartPruningFactor",
     "Do not spend time on the moves which cannot become bestmove given the "
@@ -175,8 +178,8 @@ const OptionId SearchParams::kKLDGainAverageInterval{
     "kldgain-average-interval", "KLDGainAverageInterval",
     "Used to decide how frequently to evaluate the average KLDGainPerNode to "
     "check the MinimumKLDGainPerNode, if specified."};
-const OptionId SearchParams::kAuxEnginePathId{
-    "auxengine-path", "AuxEnginePath",
+const OptionId SearchParams::kAuxEngineFileId{
+    "auxengine-file", "AuxEngineFile",
     "Path to auxiliary chess engine."};
 const OptionId SearchParams::kAuxEngineOptionsId{
     "auxengine-options", "AuxEngineOptions",
@@ -195,6 +198,9 @@ const OptionId SearchParams::kAuxEngineFollowPvDepthId{
     "auxengine-follow-pv-depth", "AuxEngineFollowPvDepth",
     "Add this many plies of the auxengine's PV at a time. "
     "Higher is faster, but deeper PV moves are less accurate"};
+const OptionId SearchParams::kAuxEngineVerbosityId{
+    "auxengine-verbosity", "AuxEngineVerbosity",
+    "Higher number for more logging."};
 
 void SearchParams::Populate(OptionsParser* options) {
   // Here the uci optimized defaults" are set.
@@ -213,6 +219,7 @@ void SearchParams::Populate(OptionsParser* options) {
       0.0f;
   options->Add<BoolOption>(kNoiseId) = false;
   options->Add<BoolOption>(kVerboseStatsId) = false;
+  options->Add<BoolOption>(kLogLiveStatsId) = false;
   options->Add<FloatOption>(kSmartPruningFactorId, 0.0f, 10.0f) = 1.33f;
   std::vector<std::string> fpu_strategy = {"reduction", "absolute"};
   options->Add<ChoiceOption>(kFpuStrategyId, fpu_strategy) = "reduction";
@@ -232,12 +239,15 @@ void SearchParams::Populate(OptionsParser* options) {
   options->Add<ChoiceOption>(kHistoryFillId, history_fill_opt) = "fen_only";
   options->Add<IntOption>(kKLDGainAverageInterval, 1, 10000000) = 100;
   options->Add<FloatOption>(kMinimumKLDGainPerNode, 0.0f, 1.0f) = 0.0f;
-  options->Add<StringOption>(kAuxEnginePathId);
+  options->Add<StringOption>(kAuxEngineFileId);
   options->Add<StringOption>(kAuxEngineOptionsId);
   options->Add<IntOption>(kAuxEngineThresholdId, 1, 1000000) = 100;
   options->Add<IntOption>(kAuxEngineDepthId, 1, 100) = 15;
   options->Add<FloatOption>(kAuxEngineBoostId, 0.0f, 100.0f) = 50.0f;
   options->Add<IntOption>(kAuxEngineFollowPvDepthId, 1, 20) = 4;
+  options->Add<IntOption>(kAuxEngineVerbosityId, 0, 10) = 1;
+
+  options->HideOption(kLogLiveStatsId);
 }
 
 SearchParams::SearchParams(const OptionsDict& options)
