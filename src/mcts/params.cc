@@ -239,6 +239,7 @@ void SearchParams::Populate(OptionsParser* options) {
   options->Add<ChoiceOption>(kHistoryFillId, history_fill_opt) = "fen_only";
   options->Add<IntOption>(kKLDGainAverageInterval, 1, 10000000) = 100;
   options->Add<FloatOption>(kMinimumKLDGainPerNode, 0.0f, 1.0f) = 0.0f;
+
   options->Add<StringOption>(kAuxEngineFileId);
   options->Add<StringOption>(kAuxEngineOptionsId);
   options->Add<IntOption>(kAuxEngineThresholdId, 1, 1000000) = 100;
@@ -246,6 +247,7 @@ void SearchParams::Populate(OptionsParser* options) {
   options->Add<FloatOption>(kAuxEngineBoostId, 0.0f, 100.0f) = 50.0f;
   options->Add<IntOption>(kAuxEngineFollowPvDepthId, 1, 20) = 4;
   options->Add<IntOption>(kAuxEngineVerbosityId, 0, 10) = 1;
+
 
   options->HideOption(kLogLiveStatsId);
 }
