@@ -27,9 +27,10 @@ NINJA=$(awk '/ninja/ {ninja=$4} END {print ninja}' meson-logs/meson-log.txt)
 
 if [ -n "${INSTALL_PREFIX}" ]
 then
-  ${NINJA} install
+  ${NINJA} installgit staus
 else
   ${NINJA}
 fi
-
+cp /Users/michaelbyrne/Github/lc0/build/release/lc0 /Users/michaelbyrne/cluster.mfb
 popd
+
